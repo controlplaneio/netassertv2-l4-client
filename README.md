@@ -1,8 +1,8 @@
-# Netassertv2-Scanner
+# Netassertv2-l4-client
 
 The `Netassertv2-l4-client` is a Go program designed to open TCP / UDP connections toward a specified destination and send a configurable string payload.
 
-A test comprises one or more connection attempts, and a passed test results in the scanner exiting with a status code of 0 (1 otherwise).
+A test comprises one or more connection attempts, and a passed test results in the client exiting with a status code of 0 (1 otherwise).
 
 You can pull the latest Docker image from `docker.io/controlplane/netassertv2-l4-client:latest`
 
@@ -27,7 +27,7 @@ Parameters can also be passed as command line arguments. These take precedence o
 
 ## Build and Run
 
-Build the scanner:
+Build the client:
 
 ```bash
 make build
@@ -41,7 +41,7 @@ And run it providing at least a target host and a port, for example:
 
 If the host is not reachable and / or there is not a service listening on the specified port, the connection(s) will fail.
 
-Multiple connections can run in parallel, for example when connections fail due to timeout and the `period` paramenter is less than `timeout`, or, more in general, if a connection takes more than `period` to complete, 
+Multiple connections can run in parallel, for example when connections fail due to timeout and the `period` parameter is less than `timeout`, or, more in general, if a connection takes more than `period` to complete, 
 
 ## Example
 
