@@ -6,6 +6,7 @@ build-race:
 
 lint:
 	golangci-lint run ./...
+
 clean:
 	@rm -rf bin/client
 

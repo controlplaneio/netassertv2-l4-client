@@ -3,7 +3,7 @@
 package main
 
 import (
-	"github.com/g-bgg/netassertv2client/cmd"
+	"github.com/controlplaneio/netassertv2-l4-client/cmd"
 
 	_ "go.uber.org/automaxprocs"
 )

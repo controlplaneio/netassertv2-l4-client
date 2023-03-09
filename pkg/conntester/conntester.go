@@ -10,8 +10,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/g-bgg/netassertv2client/pkg/config"
-	"github.com/g-bgg/netassertv2client/pkg/log"
+	"github.com/controlplaneio/netassertv2-l4-client/pkg/config"
+	"github.com/controlplaneio/netassertv2-l4-client/pkg/log"
 )
 
 // ErrTestFailed is returned when the passed connection attempts are below the success threshold

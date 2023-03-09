@@ -11,9 +11,9 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/g-bgg/netassertv2client/pkg/config"
-	"github.com/g-bgg/netassertv2client/pkg/conntester"
-	"github.com/g-bgg/netassertv2client/pkg/log"
+	"github.com/controlplaneio/netassertv2-l4-client/pkg/config"
+	"github.com/controlplaneio/netassertv2-l4-client/pkg/conntester"
+	"github.com/controlplaneio/netassertv2-l4-client/pkg/log"
 	"github.com/spf13/cobra"
 )
 
@@ -24,7 +24,7 @@ var clientConfig = &config.Config{
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:           "netassertv2client",
+	Use:           "client",
 	Short:         "A simple TCP / UDP client",
 	SilenceUsage:  true,
 	SilenceErrors: true,

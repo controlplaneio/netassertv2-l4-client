@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/g-bgg/netassertv2client/pkg/log"
+	"github.com/controlplaneio/netassertv2-l4-client/pkg/log"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
