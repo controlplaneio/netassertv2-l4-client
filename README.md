@@ -4,7 +4,7 @@ The `Netassertv2-l4-client` is a Go program designed to open TCP / UDP connectio
 
 A test comprises one or more connection attempts, and a passed test results in the client exiting with a status code of 0 (1 otherwise).
 
-You can pull the latest Docker image from `docker.io/controlplane/netassertv2-l4-client:latest`
+You can pull the latest Docker image from `docker.io/controlplane/netassertv2-l4-client:1.0.0`
 
 ## Configuration
 
@@ -36,12 +36,12 @@ make build
 And run it providing at least a target host and a port, for example:
 
 ```bash
-./bin/client --target-host 192.168.1.10 --target-port 8443
+./bin/netassertv2-l4-client --target-host 192.168.1.10 --target-port 8443
 ```
 
 If the host is not reachable and / or there is not a service listening on the specified port, the connection(s) will fail.
 
-Multiple connections can run in parallel, for example when connections fail due to timeout and the `period` parameter is less than `timeout`, or, more in general, if a connection takes more than `period` to complete, 
+Multiple connections can run in parallel, for example when connections fail due to timeout and the `period` parameter is less than `timeout`, or, more in general, if a connection takes more than `period` to complete.
 
 ## Example
 
@@ -54,7 +54,7 @@ while true; do nc -vl localhost 12345; done
 On a different tab, run the client:
 
 ```bash
-./bin/client --target-host=localhost --target-port=12345 --attempts 3 --message $'examplemessage\n'
+./bin/netassertv2-l4-client --target-host=localhost --target-port=12345 --attempts 3 --message $'examplemessage\n'
 ```
 
 Client output:
