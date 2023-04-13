@@ -94,4 +94,4 @@ Listening on localhost 12345
 ```
 
 [testing_workflow_badge]: https://github.com/controlplaneio/netassertv2-l4-client/workflows/Lint%20and%20Build/badge.svg
-[release_workflow_badge]: https://github.com/controlplaneio/netassertv2-engine/workflows/Docker%20build%20and%20publish/badge.svg
+[release_workflow_badge]: https://github.com/controlplaneio/netassertv2-l4-client/workflows/Docker%20build%20and%20publish/badge.svg
