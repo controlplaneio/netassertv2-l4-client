@@ -52,8 +52,8 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            controlplane/${{ env.IMAGE_NAME }}:${{ github.ref_name }}
-            controlplane/${{ env.IMAGE_NAME }}:latest
+            controlplane/netassertv2-l4-client:${{ github.ref_name }}
+            controlplane/netassertv2-l4-client:latest
             ${{ env.GH_REGISTRY }}/controlplaneio/${{ env.IMAGE_NAME }}:${{ github.ref_name }}
             ${{ env.GH_REGISTRY }}/controlplaneio/${{ env.IMAGE_NAME }}:latest
 
