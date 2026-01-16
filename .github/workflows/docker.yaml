@@ -53,12 +53,14 @@ jobs:
           provenance: mode=max
           push: true
           tags: |
-            controlplane/netassertv2-l4-client:${{ github.ref_name }}
-            controlplane/netassertv2-l4-client:latest
-            ${{ env.GH_REGISTRY }}/controlplaneio/${{ env.IMAGE_NAME }}:${{ github.ref_name }}
-            ${{ env.GH_REGISTRY }}/controlplaneio/${{ env.IMAGE_NAME }}:latest
+            docker.io/controlplane/netassertv2-l4-client:${{ github.ref_name }}
+            docker.io/controlplane/netassertv2-l4-client:latest
+            ${{ env.GH_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.ref_name }}
+            ${{ env.GH_REGISTRY }}/${{ env.IMAGE_NAME }}:latest
       
       - name: Sign artifact
-        run: cosign sign --yes $DIGEST_URL
-        env:
-          DIGEST_URL: ${{ steps.buildpush.outputs.digest }}
+        run: |
+          cosign sign --yes \
+            "${{ env.GH_REGISTRY }}/controlplaneio/${{ env.IMAGE_NAME }}@${{ steps.buildpush.outputs.digest }}"
+          cosign sign --yes \
+            "docker.io/controlplane/netassertv2-l4-client@${{ steps.buildpush.outputs.digest }}"
