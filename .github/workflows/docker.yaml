@@ -22,11 +22,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Print Tag
-        run: |
-           echo "Tag name from GITHUB_REF_NAME: $GITHUB_REF_NAME"
-           echo "Tag name from github.ref_name: ${{  github.ref_name }}"
-
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
 
@@ -48,19 +43,14 @@ jobs:
 
       - name: Build and push
         id: buildpush
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           platforms: linux/amd64,linux/arm64
+          sbom: true
+          provenance: mode=max
           push: true
           tags: |
             controlplane/netassertv2-l4-client:${{ github.ref_name }}
             controlplane/netassertv2-l4-client:latest
             ${{ env.GH_REGISTRY }}/controlplaneio/${{ env.IMAGE_NAME }}:${{ github.ref_name }}
             ${{ env.GH_REGISTRY }}/controlplaneio/${{ env.IMAGE_NAME }}:latest
-
-      - name: Generate artifact attestation
-        uses: actions/attest-build-provenance@v1
-        with:
-          subject-name: ${{ env.GH_REGISTRY }}/${{ env.IMAGE_NAME }}
-          subject-digest: ${{ steps.buildpush.outputs.digest }}
-          push-to-registry: true
