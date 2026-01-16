@@ -61,6 +61,6 @@ jobs:
       - name: Sign artifact
         run: |
           cosign sign --yes \
-            "${{ env.GH_REGISTRY }}/controlplaneio/${{ env.IMAGE_NAME }}@${{ steps.buildpush.outputs.digest }}"
+            "${{ env.GH_REGISTRY }}/${{ env.IMAGE_NAME }}@${{ steps.buildpush.outputs.digest }}"
           cosign sign --yes \
             "docker.io/controlplane/netassertv2-l4-client@${{ steps.buildpush.outputs.digest }}"
