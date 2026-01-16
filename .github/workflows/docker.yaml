@@ -47,6 +47,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build and push
+        id: buildpush
         uses: docker/build-push-action@v5
         with:
           platforms: linux/amd64,linux/arm64
@@ -61,5 +62,5 @@ jobs:
         uses: actions/attest-build-provenance@v1
         with:
           subject-name: ${{ env.GH_REGISTRY }}/${{ env.IMAGE_NAME }}
-          subject-digest: ${{ steps.push.outputs.digest }}
+          subject-digest: ${{ steps.buildpush.outputs.digest }}
           push-to-registry: true
