@@ -97,7 +97,6 @@ func init() {
 	rootCmd.Flags().Uint16VarP(&clientConfig.TargetPort, "target-port", "p", 0, "target port")
 	rootCmd.Flags().StringVarP(&clientConfig.Message, "message", "m", "defaultmessage", "message to send")
 	rootCmd.Flags().UintVarP(&clientConfig.Timeout, "timeout", "t", 2000, "timeout in ms")
-	rootCmd.Flags().UintVarP(&clientConfig.ReadTimeout, "read-timeout", "", 1500, "response read timeout in ms (tcp only)")
 	rootCmd.Flags().UintVarP(&clientConfig.Attempts, "attempts", "r", 1, "number of attempts, successful or not")
 	rootCmd.Flags().UintVar(&clientConfig.Period, "period", 5000, "send a new message every <period> ms")
 	rootCmd.Flags().UintVar(&clientConfig.SuccThrPec, "success-threshold", 80, "percentage of successful attempts needed")
