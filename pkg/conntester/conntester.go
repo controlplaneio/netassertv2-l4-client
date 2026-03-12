@@ -5,6 +5,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"io"
 	"net"
 	"strings"
 	"sync"
@@ -19,14 +20,15 @@ var ErrTestFailed = errors.New("test failed")
 
 // ConnTester performs connections against a certain destination
 type ConnTester struct {
-	protocol   string
-	targetHost string
-	targetPort uint16
-	message    string
-	timeout    uint
-	attempts   uint
-	period     uint
-	succThrPec uint
+	protocol    string
+	targetHost  string
+	targetPort  uint16
+	message     string
+	timeout     uint
+	readTimeout uint
+	attempts    uint
+	period      uint
+	succThrPec  uint
 
 	logger *log.Logger
 
@@ -44,14 +46,15 @@ func New(config *config.Config, logger *log.Logger) (*ConnTester, error) {
 	}
 
 	ct := &ConnTester{
-		protocol:   config.Protocol,
-		targetHost: config.TargetHost,
-		targetPort: config.TargetPort,
-		message:    config.Message,
-		timeout:    config.Timeout,
-		attempts:   config.Attempts,
-		period:     config.Period,
-		succThrPec: config.SuccThrPec,
+		protocol:    config.Protocol,
+		targetHost:  config.TargetHost,
+		targetPort:  config.TargetPort,
+		message:     config.Message,
+		timeout:     config.Timeout,
+		readTimeout: config.ReadTimeout,
+		attempts:    config.Attempts,
+		period:      config.Period,
+		succThrPec:  config.SuccThrPec,
 	}
 	ct.logger = logger
 	return ct, nil
@@ -126,11 +129,28 @@ func (c *ConnTester) send(ctx context.Context, wg *sync.WaitGroup) {
 		c.logger.Info(fmt.Sprintf("cannot set deadline to connection to %s: %s", dstEndpoint, err))
 		return
 	}
+
 	if _, err := conn.Write([]byte(c.message)); err != nil {
 		c.logger.Info(fmt.Sprintf("cannot send data to %s: %s", dstEndpoint, err))
 		return
 	}
 	c.logger.Info(fmt.Sprintf("successful connection and data sent to %s", dstEndpoint))
+
+	if tcpConn, ok := conn.(*net.TCPConn); ok {
+		if err := tcpConn.CloseWrite(); err != nil {
+			c.logger.Info(fmt.Sprintf("error during CloseWrite to %s: %s", dstEndpoint, err))
+		} else {
+			c.logger.Info("TCP FIN packet sent, writing side closed")
+		}
+
+		conn.SetReadDeadline(time.Now().Add(time.Duration(c.readTimeout) * time.Millisecond))
+		_, err = io.Copy(io.Discard, conn)
+		if err != nil && err != io.EOF {
+			c.logger.Info(fmt.Sprintf("stopped discarding data from %s: %s", dstEndpoint, err))
+		} else {
+			c.logger.Info("server response fully read and discarded")
+		}
+	}
 
 	if err := conn.Close(); err != nil {
 		c.logger.Info(fmt.Sprintf("error while closing connection to %s: %s", dstEndpoint, err))
