@@ -134,19 +134,8 @@ func (c *ConnTester) send(ctx context.Context, wg *sync.WaitGroup) {
 	}
 	c.logger.Info(fmt.Sprintf("successful connection and data sent to %s", dstEndpoint))
 
-	if tcpConn, ok := conn.(*net.TCPConn); ok {
-		if err := tcpConn.CloseWrite(); err != nil {
-			c.logger.Info(fmt.Sprintf("error during CloseWrite to %s: %s", dstEndpoint, err))
-		} else {
-			c.logger.Info("TCP FIN packet sent, writing side closed")
-		}
-
-		_, err = io.Copy(io.Discard, conn)
-		if err != nil && err != io.EOF {
-			c.logger.Info(fmt.Sprintf("stopped discarding data from %s: %s", dstEndpoint, err))
-		} else {
-			c.logger.Info("server response fully read and discarded")
-		}
+	if _, ok := conn.(*net.TCPConn); ok {
+		_, _ = io.Copy(io.Discard, conn) // keep reading until either the server closes the connection or the timeout is reached
 	}
 
 	if err := conn.Close(); err != nil {
