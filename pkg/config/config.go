@@ -22,6 +22,7 @@ type Config struct {
 	TargetPort  uint16
 	Message     string
 	Timeout     uint
+	ReadTimeout uint
 	Attempts    uint
 	Period      uint
 	SuccThrPec  uint
